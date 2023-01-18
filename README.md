@@ -1,2 +1,3 @@
 # QuantatativeTrading
-For Backup
+
+For quantitative trading strategys backup.
