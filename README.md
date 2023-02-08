@@ -2,7 +2,7 @@
 
 For quantitative trading strategies backup.
 
-Some trading strategys back-testing on Taiwan futures market. 
+Some trading strategies back-testing on Taiwan futures market. 
 
 ## 3 Step to ideate a quantitative trading strategy
 - Indicator : What kind of information about the data we want to use for trading(Such as price, KD, MACD etc.).
