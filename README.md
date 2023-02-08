@@ -24,10 +24,6 @@ Some trading strategies back-testing on Taiwan futures market.
 - Maximum 1 time transaction each day(just for convenience).
 
 ## Result
-Sum: 246 
-Win: 67  
-Lose: 179 
-Odds: 0.27235772357723576 
-Cum: 1882.0 
-PF: 1.4280191039345007 
-MDD: 367.0
+a
+b
+c
