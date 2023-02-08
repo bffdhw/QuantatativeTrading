@@ -25,7 +25,7 @@ Some trading strategies back-testing on Taiwan futures market.
 
 ## Result
 Sum: 246
-Win: 67  
+Win: 67
 Lose: 179
 Odds: 0.27235772357723576
 Cum: 1882.0
