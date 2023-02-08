@@ -89,6 +89,13 @@ lose_list=[]
 num = 0
 
 '''
+test
+'''
+long_p  = []
+short_p = []
+
+
+'''
 ================= strategy =================
 '''
 
@@ -124,6 +131,8 @@ for i in range(0,len(df)):
         print(df.iloc[i]["date"],df.iloc[i]["time"])
         print("\n")
         
+        long_p.append(cost)
+        
         
         
         
@@ -157,6 +166,8 @@ for i in range(0,len(df)):
         print("停損")
         print(df.iloc[i]["c"] - cost)
         print("\n")    
+        
+        short_p.append(df.iloc[i]["c"])
     
        
     #if meet the end of the date, sell all position(if there is)
@@ -172,9 +183,13 @@ for i in range(0,len(df)):
         if df.iloc[i]["c"]-cost>=0 :
             win = win+1
             win_list.append(df.iloc[i]["c"] - cost)
+            
+            short_p.append(df.iloc[i]["c"])
         else :
             lose = lose+1
             lose_list.append(df.iloc[i]["c"] - cost)
+            
+            short_p.append(df.iloc[i]["c"])
         
         #apppend transaction profit at this transaction
         #紀錄單次損益
@@ -205,28 +220,48 @@ print("Odds:",win/num)
 print("Cum:",cum)
 print("PF:",sum(win_list)/(sum(lose_list)*-1))
 
+
+
+#計算MDD(Maximum Drawdown)
+#先算DD並紀錄於list當中，再從中取出最大值即為MDD
+#DD定義:「累計損益」距離上一次創新高後，回吐多少幅度才再創下一次新高
 #calculate MDD
-high=0
-high2=0
-dd=0
+#tips: calculate each DD and append into a list first, then find the maximum one
+#definition of drawdown: the distance between last peak and the next peak
+
+#累計損益上一次新高
+#last peak of cumsum profit
+high = 0
+#當前DD
+#the currently dd 
+dd = 0
 dd_list=[]
+
 for i in PnL:
     #累計損益創新高，刷新high
-    if i>high:
-        high=i
+    #if cumsum profit higher then last peak, then update the peak as currently value  
+    if i > high:
+        high = i
+        #創下次新高，DD刷新為0
+        #reach new peak, reset dd as 0 
+        dd = 0
+        
     #累計損益小於前一次新高，回檔開始
-    if i<high:
-        #
-        if (high-i)>dd:
-            dd=high-i
+    #cumsum profit lower than last peak, means start drawing down
+    if i < high:
+        #累計損益持續往下才刷新dd
+        #cumsum profit keep going down, update the dd value
+        if (high-i) > dd:
+            #dd即為上次新高距離現在的幅度
+            #calculate the value of dd: "last peak - currently value"
+            dd = high - i
             dd_list.append(dd)
-    if i==high:
-        dd=0
+   
 print("MDD:", max(dd_list))
         
 
 '''
 ================= cumsum line plot =================
 '''
-df_plot= pd.DataFrame(PnL,index=date,columns=["PnL"])
+df_plot = pd.DataFrame(PnL,index=date,columns=["PnL"])
 df_plot.plot(rot=45)
