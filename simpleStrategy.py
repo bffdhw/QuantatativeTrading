@@ -89,13 +89,6 @@ lose_list=[]
 num = 0
 
 '''
-test
-'''
-long_p  = []
-short_p = []
-
-
-'''
 ================= strategy =================
 '''
 
@@ -131,10 +124,6 @@ for i in range(0,len(df)):
         print(df.iloc[i]["date"],df.iloc[i]["time"])
         print("\n")
         
-        long_p.append(cost)
-        
-        
-        
         
     #if meet stopping loss condition
     #達停損條件、目前持有部位，停損
@@ -167,8 +156,7 @@ for i in range(0,len(df)):
         print(df.iloc[i]["c"] - cost)
         print("\n")    
         
-        short_p.append(df.iloc[i]["c"])
-    
+
        
     #if meet the end of the date, sell all position(if there is)
     #13:29，表示此筆資料為當天最後一根分K，平倉
@@ -184,12 +172,9 @@ for i in range(0,len(df)):
             win = win+1
             win_list.append(df.iloc[i]["c"] - cost)
             
-            short_p.append(df.iloc[i]["c"])
         else :
             lose = lose+1
             lose_list.append(df.iloc[i]["c"] - cost)
-            
-            short_p.append(df.iloc[i]["c"])
         
         #apppend transaction profit at this transaction
         #紀錄單次損益
