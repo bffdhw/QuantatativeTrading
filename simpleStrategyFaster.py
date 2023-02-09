@@ -26,11 +26,6 @@ record = pd.DataFrame()
 df['time']= pd.to_datetime(df['time']).dt.time
 df['date']= pd.to_datetime(df['date']).dt.date
 
-#set market opening/closing time (or back testing period in a day)
-#設定要擷取的資料期間
-start_time = datetime.strptime('08:46', '%H:%M').time()
-end_time   = datetime.strptime("13:29", '%H:%M').time()
-
 #to get "last candle stick closing price" for this strategy
 #新增column，紀錄前1根K棒收盤價
 df['prev_c'] = df['c'].shift()
@@ -58,12 +53,24 @@ stop_loss = 20
 #threshold that triggered the trading signal
 threshold = 0.003
 
+#for settlement date
+settlement_date = ['2017-01-18', '2017-02-15', '2017-03-15', '2017-04-19', '2017-05-17', '2017-06-21', '2017-07-19', '2017-08-16', '2017-09-20', '2017-10-18', '2017-11-15', '2017-12-20', '2018-01-17', '2018-02-21', '2018-03-21', '2018-04-18', '2018-05-16', '2018-06-20', '2018-07-18', '2018-08-15', '2018-09-19', '2018-10-17', '2018-11-21', '2018-12-19', '2019-01-16', '2019-02-20', '2019-03-20', '2019-04-17', '2019-05-15', '2019-06-19', '2019-07-17', '2019-08-21', '2019-09-18', '2019-10-16', '2019-11-20', '2019-12-18', '2020-01-15', '2020-02-19', '2020-03-18', '2020-04-15', '2020-05-20', '2020-06-17', '2020-07-15', '2020-08-19', '2020-09-16', '2020-10-21', '2020-11-18', '2020-12-16', '2021-01-20', '2021-02-17', '2021-03-17', '2021-04-21', '2021-05-19', '2021-06-16', '2021-07-21', '2021-08-18', '2021-09-15', '2021-10-20']
+
 '''
 ================= strategy =================
 '''
 #從grouped資料當中依序遍歷每一天的資料
 #traversal all element(date) in grouped data
 for i in range(len(grouped)):  
+    
+    #處理結算日事件
+    #deal with settlement date event
+    #general days closing at 13:45, settlement date closing at 13:30
+    #5 min early for convenience
+    if str(grouped[i][0]) in settlement_date:
+        end_time  = datetime.strptime('13:25', '%H:%M').time()
+    else:
+        end_time = datetime.strptime('13:40', '%H:%M').time()
     
     #當日分K資料
     #get daily data
