@@ -21,6 +21,7 @@ Some trading strategies back-testing on Taiwan futures market.
 - If he price rose by 0.3 percent in 1min(1 candlestick), long 1 position.
 - Stop the loss at 20 point, close the position.
 - If doesn't stop the loss, then close the position at the end of each day.
+- Maximum 1 position at a time.
 - Maximum 1 time transaction each day(just for convenience).
 
 ## Result
