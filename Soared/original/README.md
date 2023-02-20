@@ -1,4 +1,4 @@
-#Stop maintenance
+# Stop maintenance
 Origin version of this strategy, just for backup.
 
 Updating version will be release at QuantitativeTrading/Soared/faster
