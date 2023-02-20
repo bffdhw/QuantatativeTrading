@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-#index_col=0get rid of "Unnamed: 0" column in a pandas 
+#index_col=0 : get rid of "Unnamed: 0" column in a pandas 
 #index_col=0 : 避免讀取csv後出現unnamed欄位
 df = pd.read_csv('./raw_m.csv', index_col=0)
 
@@ -63,6 +63,8 @@ settlement_date = ['2017-01-18', '2017-02-15', '2017-03-15', '2017-04-19', '2017
 #traversal all element(date) in grouped data
 for i in range(len(grouped)):  
     
+    print(grouped[i][0])
+    
     #處理結算日事件
     #deal with settlement date event
     #general days closing at 13:45, settlement date closing at 13:30
@@ -78,60 +80,66 @@ for i in range(len(grouped)):
     
     #過濾出符合條件的資料
     #select data that meet the condition
-    filted = daily[daily["vol"] > threshold]
+    long_signal = daily[daily["vol"] > threshold]
 
+    
     #新倉
-    #filted無資料表示無觸發交易，掠過
-    #filted有資料則取第一筆，做為今日交易
+    #long_signal無資料表示無觸發交易，掠過
+    #手上沒有部位且觸發訊號時則新倉做多1口部位
     #opening position
-    #filted empty means there's no any transaction in this day
-    #filted not empty means each possible transaction in this day 
-    #we pick the first transaction here for convenience
-    if (not filted.empty):
+    #long_signal include each possible transaction in a day 
+    #long_signal empty means there's no any transaction in a day
+    #If there's no position being hold, open 1 position while the signal being triggered.
+    if not long_signal.empty : 
         
-        #過濾符合新倉條件的資料
-        #第一筆符合threshold
-        long_data = filted.head(1)
-
-        #紀錄新倉的index，後續停損判斷時僅需擷取此筆以後的資料進行計算
-        #record the index which open a position 
-        #and select the data after this index for stop loss condition determination
-        index = long_data.index[0] 
-           
-        long_price = long_data["c"].values[0] 
-       
-        record = record.append({"date" : long_data["date"].values[0], "time" : long_data["time"].values[0], "long_price": long_price, "status" : "long"}, ignore_index=True)   
+        #to find data after this transaction faster
+        long_index  = 0
+        # long_index > short_index condition will be used to make sure there's no holding position while opening position
+        # set short_index as any negative value to make sure the transaction be done at the first signal 
+        short_index = -1
+    
+        #for each long_signal(possible opening transaction), do:
+        #step1: If already holding position, then pass; otherwise opening 1 position
+        #step2: If opening a position, determine which way the transaction will be closed, stoping loss or times up
+        for s in long_signal.iterrows():    
         
-        
-        # 平倉(停損)
-        # 停損資料要在新倉之後、end_time之前、觸發停損條件
-        #closing position(stop loss)
-        #should be after open position, before end_time, and triggered the stoping loss condicion
-        filted = daily[(daily.index >= index)  & (daily["time"] < end_time) & (daily["c"] <= (long_price - stop_loss))]
-        
-        if not filted.empty:
-            #過濾符合停損條件的資料
-            #第一筆符合threshold
-            #select the data meet stoping loss condiction
-            #and pick the first transaction
-            short_data = filted.head(1)
-            short_price = short_data["c"].values[0]  
+            long_data = s[1]
+            #index in daily data
+            long_index = long_data.name
             
-            profit = short_price - long_price
-            record = record.append({"date" : short_data["date"].values[0]  , "time" : short_data["time"].values[0]  , "short_price": short_price, "profit" : profit, "status" : "long_covered"}, ignore_index=True)   
-        
-        
-        #平倉(收盤)
-        #closing position(end of each date)
-        else :
+            #if there's no position, then long
+            if long_index > short_index:
+                
+                long_price = long_data["c"]
+                record = record.append({"date" : long_data["date"], "time" : long_data["time"], "long_price": long_price, "status" : "long", "index": long_index}, ignore_index=True)   
+                
+                #holding position due to the transaction just be made above
+                #there's 2 conditions to close the position: stop loss and end of the date
+                
+                #stop loss
+                #select all possible short_signal and pick the  nearest one 
+                short_signal = daily[(daily.index >= long_index)  & (daily["time"] < end_time) & (daily["c"] <= (long_price - stop_loss))]
+                
+                if not short_signal.empty :
+                    
+                    short_data  = short_signal.head(1)
+                    short_price = short_data["c"].values[0]  
+                    #index in daily data
+                    short_index = short_data.index[0]
+                    
+                    profit = short_price - long_price
+                    record = record.append({"date" : short_data["date"].values[0]  , "time" : short_data["time"].values[0]  , "short_price": short_price, "profit" : profit, "status" : "long_covered", "index": short_index}, ignore_index=True)   
+                
+                
+                #closing position(end of each date)
+                else :
+                    
+                    short_data = daily[daily["time"] == end_time]
+                    short_price = short_data["c"].values[0]
+                    profit = short_price - long_price
+                    
+                    record = record.append({"date" : short_data["date"].values[0], "time" : short_data["time"].values[0], "short_price": short_price, "profit" : profit, "status" : "close_covered"}, ignore_index=True)   
             
-            #配合慢速版，尚未處理結算日問題，因此固定用13:29
-            #use 13:29 as the last transaction each date
-            short_data = daily[daily["time"] == end_time]
-            short_price = short_data["c"].values[0]
-            profit = short_price - long_price
-            
-            record = record.append({"date" : short_data["date"].values[0], "time" : short_data["time"].values[0], "short_price": short_price, "profit" : profit, "status" : "long_covered"}, ignore_index=True)   
 
 '''
 ================= evaluate =================
