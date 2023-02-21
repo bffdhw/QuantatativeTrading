@@ -23,5 +23,4 @@ Some trading strategies back-testing on Taiwan futures market.
 | 4 | 2018/12/20 | 08:50:00 | 9640 | 9650 | 9640 | 9640 |
 
 - These trading strategies are developed for Taiwan futures market, but you can still collect any kind of data to apply these strategies.
-
 - Run strategies code 
