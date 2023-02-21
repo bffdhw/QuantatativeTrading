@@ -1,7 +1,7 @@
 # Stop maintenance
 Origin version of this strategy, just for backup.
 
-Updating version will be release at QuantitativeTrading/Soared/faster
+Updating version will be release at [Here](https://github.com/bffdhw/QuantitativeTrading/tree/main/Soared/faster)
 
 ## Result
 Sum: 246  
