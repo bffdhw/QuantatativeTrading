@@ -12,6 +12,8 @@ Some trading strategies back-testing on Taiwan futures market.
 
 ## How to start
 
+- Collect your own data and preprocess it to fit the following structure:
+
 |  | date | time | o | h | l | c | 
 | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 2018/12/20 | 08:46:00 | 9640 | 9640 | 9630 | 9630 |
@@ -20,3 +22,4 @@ Some trading strategies back-testing on Taiwan futures market.
 | 3 | 2018/12/20 | 08:49:00 | 9640 | 9650 | 9640 | 9650 |
 | 4 | 2018/12/20 | 08:50:00 | 9640 | 9650 | 9640 | 9640 |
 
+- Run strategies code 
