@@ -12,8 +12,11 @@ Some trading strategies back-testing on Taiwan futures market.
 
 ## How to start
 
-| date | time | o | h | l | c |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| date | time |
+| ---| --- |
+| 2018/12/20 | Content Cell  |
+| 2018/12/20 | Content Cell  |
 
+
+
+ o | h | l | c |
