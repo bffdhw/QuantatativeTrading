@@ -12,7 +12,8 @@ Some trading strategies back-testing on Taiwan futures market.
 
 ## How to start
 
-| First Header  | Second Header |
+| date | time | o | h | l | c |
 | ------------- | ------------- |
 | Content Cell  | Content Cell  |
 | Content Cell  | Content Cell  |
+
