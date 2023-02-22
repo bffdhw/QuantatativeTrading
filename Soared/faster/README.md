@@ -53,8 +53,8 @@ MDD: 544.0
 
 ### Adjust the calculation of volatility at preprocessing part
 
-Original : The distance between close price and last close price
-New : The distance between highest price and last lowest price
+- Original : The distance between close price and last close price
+- New : The distance between highest price and last lowest price
 
 Sum: 909   
 Win: 236    
@@ -67,3 +67,15 @@ MDD: 1064.0
 
 
 ### Consider the cost of fee and slippage
+
+- Slippage : 2 points each transaction
+- Fee : 1 point each selling transaction
+
+Sum: 909  
+Win: 235    
+Lose: 674  
+Odds: 0.2585258525852585  
+Cum: 12014.0  
+PF: 1.7174250567299654  
+MDD: 1564.0  
+![Figure 2023-02-22 161050](https://user-images.githubusercontent.com/34659552/220561051-fa7e509a-d3c5-4c39-8c88-dabd6f91249e.png)
