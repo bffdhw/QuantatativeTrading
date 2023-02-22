@@ -28,7 +28,7 @@ df['date']= pd.to_datetime(df['date']).dt.date
 
 #to get "last candle stick closing price" for this strategy
 #新增column，紀錄前1根K棒收盤價
-df['prev_c'] = df['c'].shift()
+df['prev_l'] = df['l'].shift()
 
 #got 1 row of NA at column "prev_c", drop it
 #首筆資料沒有前面的K棒資料，drop
@@ -36,7 +36,7 @@ df = df.dropna()
 
 #calculate the volatility of price (closing price)
 #計算漲跌幅(未轉換為百分比)
-df['vol'] = (df['c'].astype(int) - df['prev_c'].astype(int))/ df['prev_c'].astype(int)
+df['vol'] = (df['h'].astype(int) - df['prev_l'].astype(int))/ df['prev_l'].astype(int)
 
 #將分K資料以日為單位分組，方便後續當沖策略操作
 #grouped by date for the day trading strategy
@@ -52,6 +52,9 @@ stop_loss = 20
 #設定觸發交易的閾值
 #threshold that triggered the trading signal
 threshold = 0.003
+
+#set slippage as 2 points each transaction, and 1 point of fee on selling transaction
+fee_and_slippage = 5
 
 #for settlement date
 settlement_date = ['2017-01-18', '2017-02-15', '2017-03-15', '2017-04-19', '2017-05-17', '2017-06-21', '2017-07-19', '2017-08-16', '2017-09-20', '2017-10-18', '2017-11-15', '2017-12-20', '2018-01-17', '2018-02-21', '2018-03-21', '2018-04-18', '2018-05-16', '2018-06-20', '2018-07-18', '2018-08-15', '2018-09-19', '2018-10-17', '2018-11-21', '2018-12-19', '2019-01-16', '2019-02-20', '2019-03-20', '2019-04-17', '2019-05-15', '2019-06-19', '2019-07-17', '2019-08-21', '2019-09-18', '2019-10-16', '2019-11-20', '2019-12-18', '2020-01-15', '2020-02-19', '2020-03-18', '2020-04-15', '2020-05-20', '2020-06-17', '2020-07-15', '2020-08-19', '2020-09-16', '2020-10-21', '2020-11-18', '2020-12-16', '2021-01-20', '2021-02-17', '2021-03-17', '2021-04-21', '2021-05-19', '2021-06-16', '2021-07-21', '2021-08-18', '2021-09-15', '2021-10-20']
@@ -110,7 +113,7 @@ for i in range(len(grouped)):
             #if there's no position, then long
             if long_index > short_index:
                 
-                long_price = long_data["c"]
+                long_price = long_data["h"]
                 record = record.append({"date" : long_data["date"], "time" : long_data["time"], "long_price": long_price, "status" : "long", "index": long_index}, ignore_index=True)   
                 
                 #holding position due to the transaction just be made above
@@ -123,11 +126,11 @@ for i in range(len(grouped)):
                 if not short_signal.empty :
                     
                     short_data  = short_signal.head(1)
-                    short_price = short_data["c"].values[0]  
+                    short_price = long_price - stop_loss
                     #index in daily data
                     short_index = short_data.index[0]
                     
-                    profit = short_price - long_price
+                    profit = short_price - long_price  - fee_and_slippage
                     record = record.append({"date" : short_data["date"].values[0]  , "time" : short_data["time"].values[0]  , "short_price": short_price, "profit" : profit, "status" : "long_covered", "index": short_index}, ignore_index=True)   
                 
                 
@@ -136,7 +139,7 @@ for i in range(len(grouped)):
                     
                     short_data = daily[daily["time"] == end_time]
                     short_price = short_data["c"].values[0]
-                    profit = short_price - long_price
+                    profit = short_price - long_price  - fee_and_slippage
                     
                     record = record.append({"date" : short_data["date"].values[0], "time" : short_data["time"].values[0], "short_price": short_price, "profit" : profit, "status" : "close_covered"}, ignore_index=True)   
             
