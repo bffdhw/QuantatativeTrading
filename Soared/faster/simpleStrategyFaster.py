@@ -84,7 +84,6 @@ for i in range(len(grouped)):
     #過濾出符合條件的資料
     #select data that meet the condition
     long_signal = daily[daily["vol"] > threshold]
-
     
     #新倉
     #long_signal無資料表示無觸發交易，掠過
@@ -131,7 +130,7 @@ for i in range(len(grouped)):
                     short_index = short_data.index[0]
                     
                     profit = short_price - long_price  - fee_and_slippage
-                    record = record.append({"date" : short_data["date"].values[0]  , "time" : short_data["time"].values[0]  , "short_price": short_price, "profit" : profit, "status" : "long_covered", "index": short_index}, ignore_index=True)   
+                    record = record.append({"date" : short_data["date"].values[0]  , "time" : short_data["time"].values[0]  , "short_price": short_price, "profit" : profit, "status" : "long_covered", "index": short_index, "long_time" : long_data["time"], "long_price": long_price,}, ignore_index=True)   
                 
                 
                 #closing position(end of each date)
@@ -141,7 +140,7 @@ for i in range(len(grouped)):
                     short_price = short_data["c"].values[0]
                     profit = short_price - long_price  - fee_and_slippage
                     
-                    record = record.append({"date" : short_data["date"].values[0], "time" : short_data["time"].values[0], "short_price": short_price, "profit" : profit, "status" : "close_covered"}, ignore_index=True)   
+                    record = record.append({"date" : short_data["date"].values[0], "time" : short_data["time"].values[0], "short_price": short_price, "profit" : profit, "status" : "close_covered", "long_time" : long_data["time"], "long_price": long_price,}, ignore_index=True)   
             
 
 '''
@@ -215,3 +214,16 @@ print("MDD:", max(dd_list))
 df_plot = record[["date", "profit"]].dropna().reset_index(drop = True)
 df_plot["profit"] = np.cumsum(df_plot["profit"])
 df_plot.plot(x = "date", y = "profit",rot=45)
+
+
+
+
+'''
+================= profit and long time plot =================
+'''
+
+df_scatter = record[["profit", "long_time"]].dropna().reset_index(drop = True)
+df_scatter["long_time"] = df_scatter["long_time"].astype(str)
+df_scatter = df_scatter.sort_values('long_time')
+
+profit_scatter_plot = df_scatter.plot.scatter(x = "long_time", y = "profit",rot=90, figsize=(50, 10))
