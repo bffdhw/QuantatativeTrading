@@ -84,3 +84,6 @@ MDD: 1564.0
 ### Visualize and trying to find the most profitable time in a day 
 Trying to design a filter based on time to reduce non-profitable transaction in the next step.
 ![Figure 2023-02-23 202425](https://user-images.githubusercontent.com/34659552/220905566-5ef2a594-308d-41e1-b2eb-e8321aed4848.png)
+
+![Figure 2023-02-23 232959](https://user-images.githubusercontent.com/34659552/220955731-b02a9ee7-91a9-46da-96af-0328c824b753.png)
+
