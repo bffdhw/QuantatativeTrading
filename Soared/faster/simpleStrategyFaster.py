@@ -227,3 +227,23 @@ df_scatter["long_time"] = df_scatter["long_time"].astype(str)
 df_scatter = df_scatter.sort_values('long_time')
 
 profit_scatter_plot = df_scatter.plot.scatter(x = "long_time", y = "profit",rot=90, figsize=(50, 10))
+
+
+'''
+================= find more profitable time =================
+'''
+
+#calculate the cumsum profit at each time, trying to find the more prfitable time
+
+grouped = list(df_scatter.groupby("long_time"))
+cumsum_by_time = pd.DataFrame()
+
+for t in grouped :
+    
+    time = t[0] 
+    cumsum = sum(t[1]["profit"])
+    cumsum_by_time = cumsum_by_time.append({"time" : time, "cumsum" : cumsum}, ignore_index=True)  
+    
+#plot
+cumsum_by_time.plot(x = "time", y = "cumsum",rot=45, figsize=(20, 10))
+    
