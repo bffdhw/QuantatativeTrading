@@ -87,6 +87,6 @@ Trying to design a filter based on time to reduce non-profitable transaction in 
 
 ![Figure 2023-02-23 232959](https://user-images.githubusercontent.com/34659552/220955731-b02a9ee7-91a9-46da-96af-0328c824b753.png)
 
-### Eazy way using GA to find optimal parameters
+### Easy way using GA to find optimal parameters
 - Scikit-opt
--pip install sciket-opt
+- pip install sciket-opt
