@@ -80,17 +80,16 @@ PF: 1.7174250567299654
 MDD: 1564.0  
 ![Figure 2023-02-22 161050](https://user-images.githubusercontent.com/34659552/220561051-fa7e509a-d3c5-4c39-8c88-dabd6f91249e.png)
 
-### Easy way using GA to find optimal parameters
-- Pakage name : Scikit-opt
-- Install : pip install sciket-opt
-- Parameters : x point to stop loss, and y percentage the price rise for the long transaction signal.
-- GA will be used here to find the optimal parameters. 
-
-
 ### Visualize and trying to find the most profitable time in a day 
 Trying to design a filter based on time to reduce non-profitable transaction in the next step.
 ![Figure 2023-02-23 202425](https://user-images.githubusercontent.com/34659552/220905566-5ef2a594-308d-41e1-b2eb-e8321aed4848.png)
 
 ![Figure 2023-02-23 232959](https://user-images.githubusercontent.com/34659552/220955731-b02a9ee7-91a9-46da-96af-0328c824b753.png)
 
+Seems that time will be a great filter to pick the profitable transatcion.  
 
+### Easy way using GA to find optimal parameters
+- Pakage name : Scikit-opt
+- Install : pip install sciket-opt
+- Parameters : x point to stop loss, and y percentage the price rise for the long transaction signal.
+- GA will be used here to find the optimal parameters. 
