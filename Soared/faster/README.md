@@ -108,7 +108,8 @@ MDD: 2435.0
 
 ### Sometimes maybe just use the for loop
 - Top 5 performance parameters   
-- Find the whole performance record at 'performance.pkl'  
+- Find the whole performance record at 'performance.pkl'    
+
 |  | stop loss | threshold |
 | --- | --- | --- |
 | 0 | 40 | 0.001 |
