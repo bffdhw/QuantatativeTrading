@@ -104,3 +104,15 @@ PF: 4.471079989996785
 MDD: 2435.0  
 
 ![Figure 2023-02-27 150858](https://user-images.githubusercontent.com/34659552/221498044-863e24a0-791c-4aec-9cd3-f6581a5c4c33.png)
+
+
+### Sometimes maybe just use the for loop
+Sum: 10254  
+Win: 6620    
+Lose: 3634  
+Odds: 0.6456017164033548  
+Cum: 331676.0  
+PF: 4.5724779733310355  
+MDD: 2204.0  
+
+![Figure 2023-02-27 221729](https://user-images.githubusercontent.com/34659552/221587737-c43c56be-83fa-43d0-b001-90e98a4f0fbb.png)
