@@ -118,7 +118,7 @@ MDD: 2435.0
 | 3 | 50 | 0.001 |
 | 4 | 30 | 0.001 |
 
-
+Parameters : stop_loss :40, threshold : 0.001
 Sum: 10254  
 Win: 6620    
 Lose: 3634  
