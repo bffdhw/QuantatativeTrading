@@ -93,3 +93,14 @@ Seems that time will be a great filter to pick the profitable transatcion.
 - Install : pip install sciket-opt
 - Parameters : x point to stop loss, and y percentage the price rise for the long transaction signal.
 - GA will be used here to find the optimal parameters. 
+- Optimal parameter found : Stop_loss :38 , threshold : 0.00107685
+
+Sum: 8671  
+Win: 5564  
+Lose: 3107  
+Odds: 0.6416791604197901  
+Cum: 291477.0  
+PF: 4.471079989996785  
+MDD: 2435.0  
+
+![Figure 2023-02-27 150858](https://user-images.githubusercontent.com/34659552/221498044-863e24a0-791c-4aec-9cd3-f6581a5c4c33.png)
