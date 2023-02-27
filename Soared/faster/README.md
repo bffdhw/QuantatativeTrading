@@ -107,6 +107,16 @@ MDD: 2435.0
 
 
 ### Sometimes maybe just use the for loop
+- Top 5 performance parameters
+|  | stop loss | threshold |
+| --- | --- | --- |
+| 0 | 2018/12/20 | 08:46:00 | 
+| 1 | 2018/12/20 | 08:47:00 | 
+| 2 | 2018/12/20 | 08:48:00 | 
+| 3 | 2018/12/20 | 08:49:00 | 
+| 4 | 2018/12/20 | 08:50:00 | 
+
+
 Sum: 10254  
 Win: 6620    
 Lose: 3634  
