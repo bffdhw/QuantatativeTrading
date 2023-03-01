@@ -128,3 +128,9 @@ PF: 4.5724779733310355
 MDD: 2204.0  
 
 ![Figure 2023-02-27 221729](https://user-images.githubusercontent.com/34659552/221587737-c43c56be-83fa-43d0-b001-90e98a4f0fbb.png)
+
+
+# It must be something wrong
+
+The result it too good to be true.
+Still finding if there is some logical bug in the code.
