@@ -149,6 +149,8 @@ def trade(p):
                         short_data = daily[daily["time"] == end_time]
                         short_price = short_data["c"].values[0]
                         profit = short_price - long_price  - fee_and_slippage
+                        #update index
+                        short_index = short_data.index[0]
                         
                         record = record.append({"date" : short_data["date"].values[0], "time" : short_data["time"].values[0], "short_price": short_price, "profit" : profit, "status" : "close_covered", "long_time" : long_data["time"], "long_price": long_price,}, ignore_index=True)       
 
@@ -191,148 +193,155 @@ def trade(p):
     return -fitness
 
 
-''' ================= find optimal peremeter(GA) ======================'''
-from sko.GA import GA
+'''
+run
+'''
 
-print("GA")
+p = (20, 0.003)
+trade(p)
 
-#In this case, we focus on the hyper parameters : n_dim, lb, ub, and precision
-#you can briefly understand how GA working, and tune other hyper parameters as any value
-#n_dim : how many parameters we want to optimize, here we want to find 'stop_loss' and 'threshold' two parameters 
-#lb, ub : lower bound and upper bound of parameters. 
-#for example, lb=[0, 0.001], ub=[100, 0.1] means to find 'stop_loss' in the range of 0 to 100 and find 'threshold' in the range of 0.001 to 0.1
-#besides,  precision=[1,  1e-7] means that the parameter 'stop_loss' will be an integr, and 'threshold' will be a decimal value
-ga = GA(func=trade, n_dim=2, size_pop=20, max_iter=50, prob_mut=0.01, lb=[0, 0.001], ub=[100, 0.1], precision=[1,  1e-7])
-best_x, best_y = ga.run()
+# ''' ================= find optimal peremeter(GA) ======================'''
+# from sko.GA import GA
 
-#if doing minimizing, just print 'best_y', one the contrary, add a minus sign while doing maximizing before 'best_y'
-print('best_x is ', best_x, 'best_y is', -best_y)
+# print("GA")
+
+# #In this case, we focus on the hyper parameters : n_dim, lb, ub, and precision
+# #you can briefly understand how GA working, and tune other hyper parameters as any value
+# #n_dim : how many parameters we want to optimize, here we want to find 'stop_loss' and 'threshold' two parameters 
+# #lb, ub : lower bound and upper bound of parameters. 
+# #for example, lb=[0, 0.001], ub=[100, 0.1] means to find 'stop_loss' in the range of 0 to 100 and find 'threshold' in the range of 0.001 to 0.1
+# #besides,  precision=[1,  1e-7] means that the parameter 'stop_loss' will be an integr, and 'threshold' will be a decimal value
+# ga = GA(func=trade, n_dim=2, size_pop=20, max_iter=50, prob_mut=0.01, lb=[0, 0.001], ub=[100, 0.1], precision=[1,  1e-7])
+# best_x, best_y = ga.run()
+
+# #if doing minimizing, just print 'best_y', one the contrary, add a minus sign while doing maximizing before 'best_y'
+# print('best_x is ', best_x, 'best_y is', -best_y)
 
 
-''' ================= find optimal peremeter((for loop)) ======================'''
-import pickle 
-performance = {}
+# ''' ================= find optimal peremeter((for loop)) ======================'''
+# import pickle 
+# performance = {}
 
-for stop_loss in range(5, 101, 5):
-    for threshold in range(1, 101):
-        p = stop_loss, threshold/1000
-        print(p)
-        fitness = trade(p)
+# for stop_loss in range(5, 101, 5):
+#     for threshold in range(1, 101):
+#         p = stop_loss, threshold/1000
+#         print(p)
+#         fitness = trade(p)
         
-        performance[str(stop_loss) + "," + str(threshold/1000)] = fitness
+#         performance[str(stop_loss) + "," + str(threshold/1000)] = fitness
         
-#Sort by value
-performance = sorted(performance.items(), key=lambda x:x[1], reverse=True)
+# #Sort by value
+# performance = sorted(performance.items(), key=lambda x:x[1], reverse=True)
 
-with open('performance.pkl', 'wb') as f:
-    pickle.dump(performance, f)
+# with open('performance.pkl', 'wb') as f:
+#     pickle.dump(performance, f)
 
 
 '''
 comment out the code below if need to evaluate or plot
 '''
 
-# '''
-# ================= evaluate =================
-# '''
+'''
+================= evaluate =================
+'''
 
-# #generate profit list of each transaction
-# profit_list = record["profit"].dropna().reset_index(drop = True)
+#generate profit list of each transaction
+profit_list = record["profit"].dropna().reset_index(drop = True)
 
-# #total transaction times
-# num  = len(profit_list)
-# #record of profit >=0 in profit list
-# win_list  = profit_list[profit_list >= 0]
-# #record of profit <0 in profit list
-# lose_list = profit_list[profit_list < 0]
-# #number of win 
-# win  = len(win_list)
-# #number of lose
-# lose = len(lose_list)
+#total transaction times
+num  = len(profit_list)
+#record of profit >=0 in profit list
+win_list  = profit_list[profit_list >= 0]
+#record of profit <0 in profit list
+lose_list = profit_list[profit_list < 0]
+#number of win 
+win  = len(win_list)
+#number of lose
+lose = len(lose_list)
 
-# print("Sum:", num)
-# print("Win:", win," Lose:", lose)
-# print("Odds:", win/num)
-# print("Cum:", sum(profit_list))
-# print("PF:",sum(win_list)/(sum(lose_list)*-1))
-
-
-# #計算MDD(Maximum Drawdown)
-# #先算DD並紀錄於list當中，再從中取出最大值即為MDD
-# #DD定義:「累計損益」距離上一次創新高後，回吐多少幅度才再創下一次新高
-# #calculate MDD
-# #tips: calculate each DD and append into a list first, then find the maximum one
-# #definition of drawdown: the distance between last peak and the next peak
-# cumsum_list = np.cumsum(profit_list)
-
-# #累計損益上一次新高
-# #last peak of cumsum profit
-# high = 0
-# #當前DD
-# #the currently dd 
-# dd = 0
-# dd_list=[]
+print("Sum:", num)
+print("Win:", win," Lose:", lose)
+print("Odds:", win/num)
+print("Cum:", sum(profit_list))
+print("PF:",sum(win_list)/(sum(lose_list)*-1))
 
 
-# for i in cumsum_list:
-#     #累計損益創新高，刷新high
-#     #if cumsum profit higher then last peak, then update the peak as currently value  
-#     if i > high:
-#         high = i
-#         #創下次新高，DD刷新為0
-#         #reach new peak, reset dd as 0 
-#         dd = 0
+#計算MDD(Maximum Drawdown)
+#先算DD並紀錄於list當中，再從中取出最大值即為MDD
+#DD定義:「累計損益」距離上一次創新高後，回吐多少幅度才再創下一次新高
+#calculate MDD
+#tips: calculate each DD and append into a list first, then find the maximum one
+#definition of drawdown: the distance between last peak and the next peak
+cumsum_list = np.cumsum(profit_list)
+
+#累計損益上一次新高
+#last peak of cumsum profit
+high = 0
+#當前DD
+#the currently dd 
+dd = 0
+dd_list=[]
+
+
+for i in cumsum_list:
+    #累計損益創新高，刷新high
+    #if cumsum profit higher then last peak, then update the peak as currently value  
+    if i > high:
+        high = i
+        #創下次新高，DD刷新為0
+        #reach new peak, reset dd as 0 
+        dd = 0
     
-#     #累計損益小於前一次新高，回檔開始
-#     #cumsum profit lower than last peak, means start drawing down
-#     if i < high:
-#         #累計損益持續往下才刷新dd
-#         #cumsum profit keep going down, update the dd value
-#         if (high - i) > dd:
-#             #dd即為上次新高距離現在的幅度
-#             #calculate the value of dd: "last peak - currently value"
-#             dd = high - i
-#             dd_list.append(dd)
+    #累計損益小於前一次新高，回檔開始
+    #cumsum profit lower than last peak, means start drawing down
+    if i < high:
+        #累計損益持續往下才刷新dd
+        #cumsum profit keep going down, update the dd value
+        if (high - i) > dd:
+            #dd即為上次新高距離現在的幅度
+            #calculate the value of dd: "last peak - currently value"
+            dd = high - i
+            dd_list.append(dd)
             
-# print("MDD:", max(dd_list))
+print("MDD:", max(dd_list))
         
 
-# '''
-# ================= cumsum line plot =================
-# '''
-# df_plot = record[["date", "profit"]].dropna().reset_index(drop = True)
-# df_plot["profit"] = np.cumsum(df_plot["profit"])
-# df_plot.plot(x = "date", y = "profit",rot=45)
+'''
+================= cumsum line plot =================
+'''
+df_plot = record[["date", "profit"]].dropna().reset_index(drop = True)
+df_plot["profit"] = np.cumsum(df_plot["profit"])
+df_plot.plot(x = "date", y = "profit",rot=45)
 
 
 
 
-# '''
-# ================= profit and long time plot =================
-# '''
+'''
+================= profit and long time plot =================
+'''
 
-# df_scatter = record[["profit", "long_time"]].dropna().reset_index(drop = True)
-# df_scatter["long_time"] = df_scatter["long_time"].astype(str)
-# df_scatter = df_scatter.sort_values('long_time')
+df_scatter = record[["profit", "long_time"]].dropna().reset_index(drop = True)
+df_scatter["long_time"] = df_scatter["long_time"].astype(str)
+df_scatter = df_scatter.sort_values('long_time')
 
-# profit_scatter_plot = df_scatter.plot.scatter(x = "long_time", y = "profit",rot=90, figsize=(50, 10))
+profit_scatter_plot = df_scatter.plot.scatter(x = "long_time", y = "profit",rot=90, figsize=(50, 10))
 
 
-# '''
-# ================= find the more profitable time =================
-# '''
+'''
+================= find the more profitable time =================
+'''
 
-# #calculate the cumsum profit at each time, trying to find the more prfitable time
+#calculate the cumsum profit at each time, trying to find the more prfitable time
 
-# grouped = list(df_scatter.groupby("long_time"))
-# cumsum_by_time = pd.DataFrame()
+grouped = list(df_scatter.groupby("long_time"))
+cumsum_by_time = pd.DataFrame()
 
-# for t in grouped :
+for t in grouped :
     
-#     time = t[0] 
-#     cumsum = sum(t[1]["profit"])
-#     cumsum_by_time = cumsum_by_time.append({"time" : time, "cumsum" : cumsum}, ignore_index=True)  
+    time = t[0] 
+    cumsum = sum(t[1]["profit"])
+    cumsum_by_time = cumsum_by_time.append({"time" : time, "cumsum" : cumsum}, ignore_index=True)  
     
-# #plot
-# cumsum_by_time.plot(x = "time", y = "cumsum",rot=45, figsize=(20, 10))
+#plot
+cumsum_by_time.plot(x = "time", y = "cumsum",rot=45, figsize=(20, 10))
     
