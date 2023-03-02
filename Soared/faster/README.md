@@ -51,3 +51,5 @@ Odds: 0.1847649918962723
 Cum: -2156.0  
 PF: 0.8288209606986899  
 MDD: 2862.0
+
+![Figure 2023-03-02 220922](https://user-images.githubusercontent.com/34659552/222451948-05e5aca9-c0c3-40e2-914f-c0bb3eabbf25.png)
