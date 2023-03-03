@@ -68,7 +68,7 @@ MDD: 2862.0
 | 3 | 40 | 0.028 |
 | 4 | 45 | 0.028 |
 
-The result of setting parameters as stop_loss:25, threshold:0.0028
+The result of setting parameters as stop_loss:25, threshold:0.028
 
 Sum: 5  
 Win: 2  
