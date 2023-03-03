@@ -88,6 +88,6 @@ But this condiction doesn't appear frequently in just 1 minute.
 In other word, this signal might not be very good. 
 
 In my opinion, maybe there's still some way to save this strategy :
--  Change the time which threshold is considered from 1 minute to 3 min, 5 min, or maybe other longer time to find the rising trend more clearly.
+-  Change the time which threshold is considered from 1 minute to 3 min, 5 min, or maybe other longer time to find the rising trend more clearly.  
 -  Allow holding multiple positions at a time to increase the total times of transactions.
 -  Go back to the time we just make 1 transaction, and tune the parameters.
