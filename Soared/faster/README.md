@@ -53,3 +53,41 @@ PF: 0.8288209606986899
 MDD: 2862.0
 
 ![Figure 2023-03-02 220922](https://user-images.githubusercontent.com/34659552/222451948-05e5aca9-c0c3-40e2-914f-c0bb3eabbf25.png)
+
+
+### Finding profitable parameters using for loop
+
+- Top 5 performance parameters   
+- Find the whole performance record at 'performance.pkl'    
+
+|  | stop loss | threshold |
+| --- | --- | --- |
+| 0 | 25 | 0.028 |
+| 1 | 30 | 0.028 |
+| 2 | 35 | 0.028 |
+| 3 | 40 | 0.028 |
+| 4 | 45 | 0.028 |
+
+The result of setting parameters as stop_loss:25, threshold:0.0028
+
+Sum: 5  
+Win: 2  
+Lose: 3  
+Odds: 0.4  
+Cum: 556.0  
+PF: 7.177777777777778  
+MDD: 60.0  
+
+![Figure 2023-03-03 114041](https://user-images.githubusercontent.com/34659552/222625866-68e672f0-6258-42a1-a0c7-9d0053aee677.png)
+
+We can see that the total number of transaction only 5 times.
+Although they're extreamly profitable, that's not stable enough.
+
+Also we can found that the profitable performance always be made while the parameter 'threshohd' being set over 0.01. 
+But this condiction doesn't appear frequently in just 1 minute.
+In other word, this signal might not be very good. 
+
+In my opinion, maybe there's still some way to save this strategy :
+-  Change the time which threshold is considered from 1 minute to 3 min, 5 min, or maybe other longer time to find the rising trend more clearly.
+-  Allow holding multiple positions at a time to increase the total times of transactions.
+-  Go back to the time we just make 1 transaction, and tune the parameters.
