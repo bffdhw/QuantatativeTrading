@@ -83,7 +83,7 @@ MDD: 60.0
 We can see that the total number of transaction only 5 times.  
 Although they're extreamly profitable, that's not stable enough.
 
-Also we can found that the profitable performance always be made while the parameter 'threshohd' being set over 0.01. 
+Also we can found that the profitable performance always be made while the parameter 'threshohd' being set over 0.01.     
 But this condiction doesn't appear frequently in just 1 minute.
 In other word, this signal might not be very good. 
 
