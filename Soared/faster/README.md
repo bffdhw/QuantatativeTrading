@@ -80,7 +80,7 @@ MDD: 60.0
 
 ![Figure 2023-03-03 114041](https://user-images.githubusercontent.com/34659552/222625866-68e672f0-6258-42a1-a0c7-9d0053aee677.png)
 
-We can see that the total number of transaction only 5 times.
+We can see that the total number of transaction only 5 times.  
 Although they're extreamly profitable, that's not stable enough.
 
 Also we can found that the profitable performance always be made while the parameter 'threshohd' being set over 0.01. 
